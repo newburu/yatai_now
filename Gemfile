@@ -64,3 +64,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# 認証認可
+gem "devise"
+
+# 権限
+gem "pundit"

@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  festival: one
+  user: one
+  name: MyString
+  description: MyText
+  auth_code: MyString
+  status_text: MyString
+
+two:
+  festival: two
+  user: two
+  name: MyString
+  description: MyText
+  auth_code: MyString
+  status_text: MyString
