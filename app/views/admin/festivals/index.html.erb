@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Festivals" %>
+
+<h1>Festivals</h1>
+
+<div id="admin_festivals">
+  <% @admin_festivals.each do |admin_festival| %>
+    <%= render admin_festival %>
+    <p>
+      <%= link_to "Show this festival", admin_festival %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New festival", new_admin_festival_path %>
