@@ -24,6 +24,36 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header>
+      <nav style="background: #f0f0f0; padding: 10px;">
+        <%= link_to 'トップ (地図)', root_path %> |
+
+        <% if user_signed_in? %>
+          <% if current_user.admin? %>
+            <%= link_to '祭り管理', admin_festivals_path %> |
+          <% elsif current_user.manager? %>
+            <%= link_to 'マイ屋台管理', manager_stall_path %> |
+          <% end %>
+
+          <%= link_to 'アカウント編集', edit_user_registration_path %> |
+
+          <%= link_to 'ログアウト', destroy_user_session_path, data: { turbo_method: :delete } %>
+
+          <span style="float: right;">
+            ( <%= current_user.email %> でログイン中)
+          </span>
+
+        <% else %>
+          <%= link_to 'ログイン', new_user_session_path %>
+          <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <p classs="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+
+      <%= yield %>
+    </main>
   </body>
 </html>
