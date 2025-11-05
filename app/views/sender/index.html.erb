@@ -1,0 +1,143 @@
+<h1>GPS送信ページ</h1>
+<p>屋台管理者から共有された「合言葉」を入力してください。</p>
+
+<div>
+  <label for="auth_code">合言葉:</label>
+  <input type="text" id="auth_code" placeholder="例: A-chiku-1234">
+</div>
+
+<button id="start_sending">送信開始</button>
+<button id="stop_sending" disabled>送信停止</button>
+
+<div id="status" style="margin-top: 20px; font-weight: bold;">
+  （停止中）
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const startButton = document.getElementById('start_sending');
+    const stopButton = document.getElementById('stop_sending');
+    const authCodeInput = document.getElementById('auth_code');
+    const statusDiv = document.getElementById('status');
+
+    let watchId = null; // GPS監視ID
+    let intervalId = null; // 定期送信用ID
+    let lastPosition = null; // 最後に取得した位置情報
+
+    const SEND_INTERVAL = 30000; // 30秒ごとに送信
+
+    // GPS監視を開始
+    function startWatching() {
+      if ('geolocation' in navigator) {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            // 成功：最新の位置情報を保存
+            lastPosition = position;
+            statusDiv.innerHTML = `位置情報取得中...<br>
+              緯度: ${position.coords.latitude}<br>
+              経度: ${position.coords.longitude}`;
+          },
+          (error) => {
+            // 失敗
+            statusDiv.textContent = `エラー: ${error.message}`;
+          },
+          {
+            enableHighAccuracy: true, // 高精度モード
+            timeout: 10000, // 10秒でタイムアウト
+            maximumAge: 0 // キャッシュを使わない
+          }
+        );
+      } else {
+        statusDiv.textContent = 'このブラウザはGPSに対応していません';
+      }
+    }
+
+    // 定期送信を開始
+    function startSending() {
+      const authCode = authCodeInput.value.trim();
+      if (authCode === "") {
+        alert('合言葉を入力してください');
+        return;
+      }
+      if (!lastPosition) {
+         alert('位置情報がまだ取得できていません。少し待ってから再度お試しください。');
+         return;
+      }
+
+      // 定期的にサーバーへPOSTする
+      intervalId = setInterval(() => {
+        if (lastPosition) {
+          sendLocation(authCode, lastPosition.coords);
+        }
+      }, SEND_INTERVAL);
+
+      // UIの更新
+      statusDiv.textContent = '送信を開始しました。';
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      authCodeInput.disabled = true;
+    }
+
+    // サーバーへ位置情報を送信 (fetch API)
+    async function sendLocation(authCode, coords) {
+      const postData = {
+        auth_code: authCode,
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      };
+
+      try {
+        const response = await fetch('/api/v1/locations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // Rails APIは 'X-CSRF-Token' ヘッダを要求しない設定にしたので不要
+          },
+          body: JSON.stringify(postData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          statusDiv.innerHTML = `送信成功 (${new Date().toLocaleTimeString()})<br>
+                               緯度: ${coords.latitude}<br>
+                               経度: ${coords.longitude}`;
+        } else {
+          statusDiv.textContent = `送信エラー: ${result.message || 'サーバーエラー'}`;
+          stopWatchingAndSending(); // 認証エラーなら停止
+        }
+      } catch (error) {
+        statusDiv.textContent = `通信エラー: ${error.message}`;
+      }
+    }
+
+    // すべて停止
+    function stopWatchingAndSending() {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+      if (intervalId) clearInterval(intervalId);
+
+      watchId = null;
+      intervalId = null;
+      lastPosition = null;
+
+      // UIを初期状態に戻す
+      statusDiv.textContent = '（停止中）';
+      startButton.disabled = false;
+      stopButton.disabled = true;
+      authCodeInput.disabled = false;
+    }
+
+    // --- イベントリスナー ---
+
+    // 「送信開始」ボタン
+    startButton.addEventListener('click', () => {
+      // まずGPS監視を開始
+      startWatching();
+      // 次に定期送信を開始
+      startSending();
+    });
+
+    // 「送信停止」ボタン
+    stopButton.addEventListener('click', stopWatchingAndSending);
+  });
+</script>
