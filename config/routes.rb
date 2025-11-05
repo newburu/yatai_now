@@ -39,6 +39,9 @@ Rails.application.routes.draw do
 
   # 屋台管理者用 ( /manager/my_stall など)
   namespace :manager do
+    get "stalls/show"
+    get "stalls/edit"
+    get "stalls/update"
     resource :stall, only: [ :show, :edit, :update ] # 自分の屋台を管理
   end
 end

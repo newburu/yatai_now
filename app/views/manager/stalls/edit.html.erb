@@ -1,0 +1,19 @@
+<h1><%= @my_stall.name %> の情報を編集</h1>
+
+<%= form_with model: @my_stall, url: manager_stall_path do |form| %>
+  <div>
+    <%= form.label :name, '屋台名' %><br>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :description, '紹介文' %><br>
+    <%= form.text_area :description %>
+  </div>
+  <div>
+    <%= form.label :status_text, '現在の状況' %><br>
+    <%= form.text_field :status_text %>
+  </div>
+  <div>
+    <%= form.submit '更新する' %>
+  </div>
+<% end %>

@@ -1,0 +1,7 @@
+<h1><%= @my_stall.name %> の情報</h1>
+
+<p><strong>紹介文:</strong> <%= @my_stall.description %></p>
+<p><strong>現在の状況:</strong> <%= @my_stall.status_text %></p>
+<p><strong>GPS送信用 合言葉:</strong> <%= @my_stall.auth_code %></p>
+
+<%= link_to '編集する', edit_manager_stall_path %>
