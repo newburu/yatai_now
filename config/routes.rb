@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   # サイト管理者用 ( /admin/festivals など)
   namespace :admin do
+    resources :users
     resources :festivals
     resources :users # 屋台管理者アカウントの管理
   end
