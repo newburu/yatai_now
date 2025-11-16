@@ -3,21 +3,30 @@ class Api::V1::MapDataController < ApplicationController
     # 1. 現在開催中の祭りを探す
     active_festival = Festival.find_by(is_active: true)
 
-    # 2. 関連付け (has_one :latest_location) を使って効率的にデータを取得
-    stalls_with_location = active_festival.stalls.includes(:latest_location)
+    if active_festival.nil?
+      render json: { error: "Active festival not found" }, status: :not_found
+      return
+    end
 
-    # 3. 地図に表示したい情報だけをJSONで返す
-    data = stalls_with_location.map do |stall|
+    # 2. その祭りに属する屋台と、各屋台の「最新の位置情報」を効率的に取得
+    #    (Stallモデルに定義した `has_one :latest_location` がここで活躍します)
+    stalls = active_festival.stalls.includes(:latest_location)
+
+    # 3. 地図に表示するために必要な情報だけを抽出して、JSON用の配列を作成
+    data = stalls.map do |stall|
       {
         id: stall.id,
         name: stall.name,
         status: stall.status_text,
-        lat: stall.latest_location&.latitude, # &.(ぼっち演算子)で位置情報が無くてもエラーにしない
-        lng: stall.latest_location&.longitude,
-        updated_at: stall.latest_location&.timestamp
+
+        # (latest_location がまだ存在しない場合(nil) も考慮する)
+        latitude: stall.latest_location&.latitude,
+        longitude: stall.latest_location&.longitude,
+        last_updated: stall.latest_location&.timestamp
       }
     end
 
+    # 4. JSONデータとして返す
     render json: data
   end
 end
