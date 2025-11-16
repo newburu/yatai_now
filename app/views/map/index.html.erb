@@ -1,2 +1,96 @@
-<h1>Map#index</h1>
-<p>Find me in app/views/map/index.html.erb</p>
+<div id='map' style='width: 100%; height: 600px;'></div>
+
+<script>
+  const API_URL = '/api/v1/map_data';
+  const UPDATE_INTERVAL = 30000; // 30秒ごとに更新
+  let map; // Google Map オブジェクト
+  let markers = {}; // マーカーを屋台IDごとに保存するオブジェクト { stallId: { marker, infoWindow } }
+
+  // --- 1. 地図の初期化 (Google Maps API が呼び出すコールバック関数) ---
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: 34.8394, lng: 134.6939 }, // {緯度, 経度} (姫路駅周辺)
+      zoom: 13, // ズームレベル
+    });
+
+    // --- 3. 実行 ---
+    // ページ読み込み時にまず1回実行
+    updateMapMarkers();
+    
+    // その後、一定間隔で繰り返し実行
+    setInterval(updateMapMarkers, UPDATE_INTERVAL);
+  }
+
+  // --- 2. APIからデータを取得してマーカーを更新する関数 ---
+  async function updateMapMarkers() {
+    console.log('Fetching map data...');
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) {
+        console.error('Failed to fetch map data');
+        return;
+      }
+      
+      const stalls = await response.json();
+      
+      // 取得したデータでマーカーを更新
+      stalls.forEach(stall => {
+        // 位置情報 (lat, lng) がある屋台だけを処理
+        if (stall.latitude && stall.longitude) {
+          
+          const stallId = stall.id;
+          // Google Maps は {lat: 緯度, lng: 経度} オブジェクトを使う
+          const position = { lat: stall.latitude, lng: stall.longitude }; 
+
+          // InfoWindow（マーカークリックで表示）の中身
+          const infoWindowContent = `
+            <strong>${stall.name}</strong><br>
+            状況: ${stall.status || '不明'}<br>
+            最終更新: ${new Date(stall.last_updated).toLocaleTimeString()}
+          `;
+
+          if (markers[stallId]) {
+            // (A) マーカーが既に存在する場合: 位置とInfoWindowを更新
+            markers[stallId].marker.setPosition(position);
+            markers[stallId].infoWindow.setContent(infoWindowContent);
+            
+          } else {
+            // (B) マーカーがまだない場合: 新しく作成
+            const infoWindow = new google.maps.InfoWindow({
+              content: infoWindowContent
+            });
+
+            const marker = new google.maps.Marker({
+              position: position,
+              map: map, // マーカーを地図に追加
+              title: stall.name
+            });
+
+            // マーカークリックで InfoWindow を開く
+            marker.addListener('click', () => {
+              infoWindow.open({
+                anchor: marker,
+                map: map,
+              });
+            });
+
+            // 作成したマーカーとInfoWindowを保存
+            markers[stallId] = { marker: marker, infoWindow: infoWindow };
+          }
+        }
+      });
+
+      console.log('Map updated.');
+
+    } catch (error) {
+      console.error('Error updating map:', error);
+    }
+  }
+
+  // グローバルスコープに関数を公開（コールバックのため）
+  window.initMap = initMap;
+</script>
+
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap">
+</script>

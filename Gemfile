@@ -70,3 +70,7 @@ gem "devise"
 
 # 権限
 gem "pundit"
+
+group :development, :test do
+  gem "dotenv-rails"
+end
