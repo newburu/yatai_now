@@ -32,6 +32,7 @@
           <% if current_user.admin? %>
             <%= link_to '祭り管理', admin_festivals_path %> |
             <%= link_to 'ユーザー管理', admin_users_path %> |
+            <%= link_to '屋台管理', admin_stalls_path %> |
           <% elsif current_user.manager? %>
             <%= link_to 'マイ屋台管理', manager_stall_path %> |
           <% end %>

@@ -1,0 +1,47 @@
+<%= form_with(model: [:admin, @stall]) do |form| %>
+  <% if stall.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(stall.errors.count, "error") %> prohibited this stall from being saved:</h2>
+
+      <ul>
+        <% stall.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+
+  <div>
+    <%= form.label :festival_id, "祭り" %>
+    <%= form.collection_select :festival_id, Festival.all, :id, :name, { prompt: "祭りを選択" } %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, "屋台管理者" %>
+    <%= form.collection_select :user_id, User.manager, :id, :email, { prompt: "担当者を選択" } %>
+  </div>
+
+  <div>
+    <%= form.label :status_text, style: "display: block" %>
+    <%= form.text_field :status_text %>
+  </div>
+
+  <div>
+    <%= form.label :auth_code, style: "display: block" %>
+    <%= form.text_field :auth_code %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

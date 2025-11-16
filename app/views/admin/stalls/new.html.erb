@@ -1,0 +1,11 @@
+<% content_for :title, "New stall" %>
+
+<h1>New stall</h1>
+
+<%= render "form", stall: @stall %>
+
+<br>
+
+<div>
+  <%= link_to "Back to stalls", admin_stalls_path %>
+</div>

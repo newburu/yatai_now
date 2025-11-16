@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @stall %>
+
+<div>
+  <%= link_to "Edit this stall", edit_admin_stall_path(@stall) %> |
+  <%= link_to "Back to stalls", admin_stalls_path %>
+
+  <%= button_to "Destroy this stall", [ :admin, @stall ], method: :delete %>
+</div>
