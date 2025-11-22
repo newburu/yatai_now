@@ -73,4 +73,5 @@ gem "pundit"
 
 group :development, :test do
   gem "dotenv-rails"
+  gem "seed-fu"
 end
