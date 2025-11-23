@@ -1,7 +1,49 @@
-<h1><%= @my_stall.name %> の情報</h1>
-
-<p><strong>紹介文:</strong> <%= @my_stall.description %></p>
-<p><strong>現在の状況:</strong> <%= @my_stall.status_text %></p>
-<p><strong>GPS送信用 合言葉:</strong> <%= @my_stall.auth_code %></p>
-
-<%= link_to '編集する', edit_manager_stall_path %>
+<div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-2xl mx-auto mt-8">
+  <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+    <div>
+      <h3 class="text-lg leading-6 font-medium text-gray-900">
+        屋台情報
+      </h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+        管理している屋台の詳細情報です。
+      </p>
+    </div>
+    <%= link_to '編集する', edit_manager_stall_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+  </div>
+  <div class="border-t border-gray-200">
+    <dl>
+      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          屋台名
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= @my_stall.name %>
+        </dd>
+      </div>
+      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          紹介文
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= @my_stall.description %>
+        </dd>
+      </div>
+      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          現在の状況
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <%= @my_stall.status_text %>
+        </dd>
+      </div>
+      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          GPS送信用 合言葉
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 font-mono bg-gray-100 p-2 rounded inline-block">
+          <%= @my_stall.auth_code %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>

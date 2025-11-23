@@ -1,16 +1,43 @@
-<h1>GPS送信ページ</h1>
-<p>屋台管理者から共有された「合言葉」を入力してください。</p>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      GPS送信ページ
+    </h2>
+    <p class="mt-2 text-center text-sm text-gray-600">
+      屋台管理者から共有された「合言葉」を入力して、<br>
+      現在地を共有してください。
+    </p>
+  </div>
 
-<div>
-  <label for="auth_code">合言葉:</label>
-  <input type="text" id="auth_code" placeholder="例: A-chiku-1234">
-</div>
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div class="space-y-6">
+        <div>
+          <label for="auth_code" class="block text-sm font-medium text-gray-700">
+            合言葉
+          </label>
+          <div class="mt-1">
+            <input id="auth_code" name="auth_code" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="例: A-chiku-1234">
+          </div>
+        </div>
 
-<button id="start_sending">送信開始</button>
-<button id="stop_sending" disabled>送信停止</button>
+        <div class="flex space-x-4">
+          <button id="start_sending" type="button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+            送信開始
+          </button>
+          <button id="stop_sending" type="button" disabled class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:bg-gray-400 disabled:cursor-not-allowed">
+            送信停止
+          </button>
+        </div>
 
-<div id="status" style="margin-top: 20px; font-weight: bold;">
-  （停止中）
+        <div class="mt-4">
+          <div id="status" class="p-4 rounded-md bg-gray-50 border border-gray-200 text-center font-medium text-gray-700">
+            （停止中）
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -33,13 +60,13 @@
           (position) => {
             // 成功：最新の位置情報を保存
             lastPosition = position;
-            statusDiv.innerHTML = `位置情報取得中...<br>
-              緯度: ${position.coords.latitude}<br>
-              経度: ${position.coords.longitude}`;
+            updateStatus(`位置情報取得中...<br>
+              緯度: ${position.coords.latitude.toFixed(6)}<br>
+              経度: ${position.coords.longitude.toFixed(6)}`);
           },
           (error) => {
             // 失敗
-            statusDiv.textContent = `エラー: ${error.message}`;
+            updateStatus(`エラー: ${error.message}`, true);
           },
           {
             enableHighAccuracy: true, // 高精度モード
@@ -48,7 +75,7 @@
           }
         );
       } else {
-        statusDiv.textContent = 'このブラウザはGPSに対応していません';
+        updateStatus('このブラウザはGPSに対応していません', true);
       }
     }
 
@@ -72,7 +99,7 @@
       }, SEND_INTERVAL);
 
       // UIの更新
-      statusDiv.textContent = '送信を開始しました。';
+      updateStatus('送信を開始しました。', false, 'bg-blue-50', 'text-blue-700');
       startButton.disabled = true;
       stopButton.disabled = false;
       authCodeInput.disabled = true;
@@ -99,15 +126,15 @@
         const result = await response.json();
 
         if (response.ok) {
-          statusDiv.innerHTML = `送信成功 (${new Date().toLocaleTimeString()})<br>
-                               緯度: ${coords.latitude}<br>
-                               経度: ${coords.longitude}`;
+          updateStatus(`送信成功 (${new Date().toLocaleTimeString()})<br>
+                       緯度: ${coords.latitude.toFixed(6)}<br>
+                       経度: ${coords.longitude.toFixed(6)}`, false, 'bg-green-50', 'text-green-700');
         } else {
-          statusDiv.textContent = `送信エラー: ${result.message || 'サーバーエラー'}`;
+          updateStatus(`送信エラー: ${result.message || 'サーバーエラー'}`, true);
           stopWatchingAndSending(); // 認証エラーなら停止
         }
       } catch (error) {
-        statusDiv.textContent = `通信エラー: ${error.message}`;
+        updateStatus(`通信エラー: ${error.message}`, true);
       }
     }
 
@@ -121,10 +148,16 @@
       lastPosition = null;
 
       // UIを初期状態に戻す
-      statusDiv.textContent = '（停止中）';
+      updateStatus('（停止中）');
       startButton.disabled = false;
       stopButton.disabled = true;
       authCodeInput.disabled = false;
+    }
+
+    // ステータス表示更新ヘルパー
+    function updateStatus(message, isError = false, bgClass = 'bg-gray-50', textClass = 'text-gray-700') {
+      statusDiv.innerHTML = message;
+      statusDiv.className = `p-4 rounded-md border border-gray-200 text-center font-medium ${isError ? 'bg-red-50 text-red-700' : `${bgClass} ${textClass}`}`;
     }
 
     // --- イベントリスナー ---

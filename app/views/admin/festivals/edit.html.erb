@@ -1,12 +1,7 @@
 <% content_for :title, "Editing festival" %>
 
-<h1>Editing festival</h1>
+<div class="mx-auto max-w-2xl">
+  <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight mb-8">祭り編集</h1>
 
-<%= render "form", festival: @festival %>
-
-<br>
-
-<div>
-  <%= link_to "Show this festival", [:admin, @festival] %> |
-  <%= link_to "Back to festivals", admin_festivals_path %>
+  <%= render "form", festival: @festival %>
 </div>
