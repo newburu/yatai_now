@@ -1,0 +1,83 @@
+<%# app/views/errors/no_assigned_yatai.html.erb %>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>担当屋台が未登録です | 屋台なう</title>
+  <style>
+    /* 前回のデザインをベースに、少し温かみのある色合いに変更 */
+    body {
+      background-color: #fff3e0; /* 薄いオレンジ系の背景 */
+      color: #5d4037; /* 焦げ茶色の文字 */
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      text-align: center;
+      margin: 0; padding: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      padding: 30px 20px;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .icon {
+      font-size: 80px;
+      margin-bottom: 10px;
+      /* 少し首をかしげるようなアニメーション */
+      animation: tilt 2s infinite ease-in-out;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 10px 0 20px;
+      color: #e65100; /* 濃いオレンジ */
+      font-weight: bold;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #795548;
+      margin-bottom: 30px;
+      text-align: left;
+      display: inline-block;
+    }
+    .btn {
+      display: block; width: 80%; margin: 10px auto; padding: 12px 0;
+      text-decoration: none; font-weight: bold; border-radius: 50px;
+      transition: opacity 0.3s; text-align: center;
+    }
+    /* メインのアクションボタン（ログアウトなど） */
+    .btn-primary { background-color: #e65100; color: #fff; }
+    /* サブのアクションボタン */
+    .btn-secondary { background-color: #efebe9; color: #5d4037; }
+    .btn:hover { opacity: 0.9; }
+
+    @keyframes tilt {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+      100% { transform: rotate(0deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🤷‍♂️🏮</div>
+    <h1>担当の屋台が見つかりません</h1>
+    <p>
+      ログインしましたが、あなたのアカウントに<br>
+      紐付けられた屋台情報がまだ登録されて<br>
+      いないようです。<br>
+      <br>
+      <small>※ 各地区の運営管理者による設定が必要です。</small>
+    </p>
+    
+    <%# ログアウトのパスは実際のアプリに合わせて変更してください %>
+    <%# 例: link_to "ログアウトして戻る", destroy_user_session_path, method: :delete, class: "btn btn-primary" %>
+    <a href="/" class="btn btn-primary">トップページへ戻る</a>
+    
+    </div>
+</body>
+</html>

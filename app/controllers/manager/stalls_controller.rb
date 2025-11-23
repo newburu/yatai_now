@@ -8,6 +8,7 @@ class Manager::StallsController < Manager::BaseController
   # GET /manager/stall
   def show
     # @my_stall は before_action でセットされる
+    raise NoAssignedYataiError if @my_stall.nil?
   end
 
   # GET /manager/stall/edit
@@ -18,7 +19,7 @@ class Manager::StallsController < Manager::BaseController
   # PATCH/PUT /manager/stall
   def update
     if @my_stall.update(stall_params)
-      redirect_to manager_stall_path, notice: '屋台情報を更新しました'
+      redirect_to manager_stall_path, notice: "屋台情報を更新しました"
     else
       render :edit, status: :unprocessable_entity
     end
