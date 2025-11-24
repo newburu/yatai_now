@@ -1,5 +1,6 @@
 # app/models/stall.rb
 class Stall < ApplicationRecord
+  has_one_attached :icon
   belongs_to :festival
 
   # user_id を manager_id として扱う (userモデルとの関連名を 'manager' にする)

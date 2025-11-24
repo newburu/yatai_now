@@ -1,6 +1,18 @@
 <h1><%= @my_stall.name %> の情報を編集</h1>
 
 <%= form_with model: @my_stall, url: manager_stall_path do |form| %>
+  <% if @my_stall.icon.attached? %>
+    <div>
+      <p>現在のアイコン:</p>
+      <%= image_tag @my_stall.icon, width: "100" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :icon, 'アイコン画像' %><br>
+    <%= form.file_field :icon %>
+  </div>
+
   <div>
     <%= form.label :name, '屋台名' %><br>
     <%= form.text_field :name %>

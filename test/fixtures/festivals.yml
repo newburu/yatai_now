@@ -1,9 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  name: MyString
-  is_active: false
+  id: 1
+  name: Festival One
+  start_date: 2025-10-28
+  end_date: 2025-10-30
+  is_active: true
 
 two:
-  name: MyString
+  id: 2
+  name: Festival Two
+  start_date: 2026-10-28
+  end_date: 2026-10-30
   is_active: false

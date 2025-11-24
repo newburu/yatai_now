@@ -34,6 +34,6 @@ class Manager::StallsController < Manager::BaseController
 
   def stall_params
     # 更新を許可するカラムを指定
-    params.require(:stall).permit(:name, :description, :status_text)
+    params.require(:stall).permit(:name, :description, :status_text, :icon)
   end
 end

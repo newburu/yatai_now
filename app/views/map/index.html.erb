@@ -49,10 +49,26 @@
             最終更新: ${new Date(stall.last_updated).toLocaleTimeString()}
           `;
 
+          const markerOptions = {
+            position: position,
+            map: map, // マーカーを地図に追加
+            title: stall.name,
+          };
+
+          if (stall.icon_url) {
+            markerOptions.icon = {
+              url: stall.icon_url,
+              scaledSize: new google.maps.Size(50, 50), // アイコンのサイズを50x50に設定
+            };
+          }
+
           if (markers[stallId]) {
             // (A) マーカーが既に存在する場合: 位置とInfoWindowを更新
             markers[stallId].marker.setPosition(position);
             markers[stallId].infoWindow.setContent(infoWindowContent);
+            if (stall.icon_url) {
+              markers[stallId].marker.setIcon(markerOptions.icon);
+            }
             
           } else {
             // (B) マーカーがまだない場合: 新しく作成
@@ -60,11 +76,7 @@
               content: infoWindowContent
             });
 
-            const marker = new google.maps.Marker({
-              position: position,
-              map: map, // マーカーを地図に追加
-              title: stall.name
-            });
+            const marker = new google.maps.Marker(markerOptions);
 
             // マーカークリックで InfoWindow を開く
             marker.addListener('click', () => {

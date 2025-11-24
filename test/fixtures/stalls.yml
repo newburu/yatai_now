@@ -1,17 +1,17 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  festival: one
-  user: one
-  name: MyString
-  description: MyText
-  auth_code: MyString
-  status_text: MyString
+  id: 1
+  festival_id: 1
+  user_id: 1
+  name: Stall One
+  description: "Description for stall one"
+  auth_code: "auth_code_one"
+  status_text: "Open"
 
 two:
-  festival: two
-  user: two
-  name: MyString
-  description: MyText
-  auth_code: MyString
-  status_text: MyString
+  id: 2
+  festival_id: 2
+  user_id: 2
+  name: Stall Two
+  description: "Description for stall two"
+  auth_code: "auth_code_two"
+  status_text: "Closed"
