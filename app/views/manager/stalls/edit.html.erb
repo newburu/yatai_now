@@ -1,19 +1,38 @@
-<h1><%= @my_stall.name %> の情報を編集</h1>
+<div class="bg-white shadow sm:rounded-lg max-w-2xl mx-auto mt-8">
+  <div class="px-4 py-5 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900">
+      屋台情報の編集
+    </h3>
+  </div>
+  <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+    <%= form_with model: @my_stall, url: manager_stall_path, class: "space-y-6" do |form| %>
+      <div>
+        <%= form.label :name, '屋台名', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= form.text_field :name, class: "shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+      </div>
 
-<%= form_with model: @my_stall, url: manager_stall_path do |form| %>
-  <div>
-    <%= form.label :name, '屋台名' %><br>
-    <%= form.text_field :name %>
+      <div>
+        <%= form.label :description, '紹介文', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= form.text_area :description, rows: 3, class: "shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <p class="mt-2 text-sm text-gray-500">屋台の特徴やメニューなどを記述してください。</p>
+      </div>
+
+      <div>
+        <%= form.label :status_text, '現在の状況', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= form.text_field :status_text, class: "shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+        </div>
+        <p class="mt-2 text-sm text-gray-500">例：営業中、準備中、移動中 など</p>
+      </div>
+
+      <div class="flex items-center justify-end">
+        <%= link_to 'キャンセル', manager_stall_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3" %>
+        <%= form.submit '更新する', class: "inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= form.label :description, '紹介文' %><br>
-    <%= form.text_area :description %>
-  </div>
-  <div>
-    <%= form.label :status_text, '現在の状況' %><br>
-    <%= form.text_field :status_text %>
-  </div>
-  <div>
-    <%= form.submit '更新する' %>
-  </div>
-<% end %>
+</div>
