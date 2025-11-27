@@ -1,24 +1,69 @@
-# README
+# 屋台位置共有アプリ
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+これは、祭りの屋台のリアルタイムな位置情報を共有するためのRuby on Railsアプリケーションです。
 
-Things you may want to cover:
+## 機能
 
-* Ruby version
+- **リアルタイムマップ表示:** 訪問者は、地図上で全ての屋台の現在位置を閲覧できます。
+- **GPS送信:** 指定されたユーザーは、自分の屋台のGPS位置情報を送信できます。
+- **屋台管理:** 屋台の管理者は、自分の屋台の情報を更新できます。
+- **管理者ダッシュボード:** 管理者は、祭り、屋台、およびユーザーアカウントを管理できます。
 
-* System dependencies
+## 技術スタック
 
-* Configuration
+- **バックエンド:** Ruby on Rails
+- **データベース:** PostgreSQL
+- **フロントエンド:** Hotwire (Turbo, Stimulus), Importmap
+- **認証:** Devise
+- **認可:** Pundit
+- **デプロイ:** Kamal
 
-* Database creation
+## 開発環境のセットアップ
 
-* Database initialization
+### 前提条件
 
-* How to run the test suite
+- Ruby (`.ruby-version` ファイルで指定されているバージョン)
+- PostgreSQL
 
-* Services (job queues, cache servers, search engines, etc.)
+### インストール
 
-* Deployment instructions
+1.  **リポジトリをクローンする:**
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
 
-* ...
+2.  **Rubyの依存関係をインストールする:**
+    ```bash
+    bundle install
+    ```
+
+3.  **データベースを作成・設定する:**
+    - PostgreSQLのユーザーとデータベースを作成します。
+    - `.env.example` を `.env` にコピーし、データベースの認証情報を入力します:
+      ```bash
+      cp .env.example .env
+      ```
+
+4.  **データベースをセットアップする:**
+    ```bash
+    bundle exec rails db:create
+    bundle exec rails db:migrate
+    bundle exec rails db:seed_fu
+    ```
+
+### アプリケーションの実行
+
+- **Railsサーバーを起動する:**
+  ```bash
+  bundle exec rails server
+  ```
+
+- **テストスイートを実行する:**
+  ```bash
+  bundle exec rails test
+  ```
+
+## デプロイ
+
+このアプリケーションは、[Kamal](https://kamal-deploy.org/) を使用したデプロイが設定されています。デプロイの手順については、Kamalの公式ドキュメントを参照してください。
