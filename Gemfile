@@ -75,3 +75,5 @@ group :development, :test do
   gem "dotenv-rails"
   gem "seed-fu"
 end
+
+gem "tailwindcss-rails", "~> 4.4"

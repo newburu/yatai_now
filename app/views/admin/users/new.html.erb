@@ -1,11 +1,7 @@
 <% content_for :title, "New user" %>
 
-<h1>New user</h1>
+<div class="mx-auto max-w-2xl">
+  <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight mb-8">新規ユーザー作成</h1>
 
-<%= render "form", user: @user %>
-
-<br>
-
-<div>
-  <%= link_to "Back to users", admin_users_path %>
+  <%= render "form", user: @user %>
 </div>
