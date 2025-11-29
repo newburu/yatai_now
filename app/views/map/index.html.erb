@@ -35,8 +35,14 @@
       
       // 取得したデータでマーカーを更新
       stalls.forEach(stall => {
-        // 位置情報 (lat, lng) がある屋台だけを処理
-        if (stall.latitude && stall.longitude) {
+        // (データが null や undefined の場合は NaN になります)
+        const latStr = stall.latitude;
+        const lngStr = stall.longitude;
+        const latNum = parseFloat(latStr);
+        const lngNum = parseFloat(lngStr);
+
+        // (Number.isNaN は、本当に NaN である場合のみ true を返します)
+        if (latStr != null && lngStr != null && !Number.isNaN(latNum) && !Number.isNaN(lngNum)) {
           
           const stallId = stall.id;
           // Google Maps は {lat: 緯度, lng: 経度} オブジェクトを使う
@@ -95,6 +101,9 @@
             // 作成したマーカーとInfoWindowを保存
             markers[stallId] = { marker: marker, infoWindow: infoWindow };
           }
+        } else {
+            // 位置情報が不正なデータが来た場合のログ
+            console.warn(`Skipping stall ${stall.id} due to invalid location data:`, stall.latitude, stall.longitude);
         }
       });
 
