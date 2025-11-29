@@ -2,7 +2,8 @@ require "test_helper"
 
 class Admin::StallsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @admin_stall = admin_stalls(:one)
+    @stall = stalls(:one)
+    sign_in users(:admin)
   end
 
   test "should get index" do
@@ -15,32 +16,46 @@ class Admin::StallsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create admin_stall" do
-    assert_difference("Admin::Stall.count") do
-      post admin_stalls_url, params: { admin_stall: { auth_code: @admin_stall.auth_code, description: @admin_stall.description, festival_id: @admin_stall.festival_id, name: @admin_stall.name, status_text: @admin_stall.status_text, user_id: @admin_stall.user_id } }
+  test "should create stall" do
+    assert_difference("Stall.count") do
+      post admin_stalls_url, params: { stall: {
+        auth_code: @stall.auth_code,
+        description: @stall.description,
+        festival_id: @stall.festival_id,
+        name: "New Stall",
+        status_text: @stall.status_text,
+        user_id: @stall.user_id
+      } }
     end
 
-    assert_redirected_to admin_stall_url(Admin::Stall.last)
+    assert_redirected_to admin_stall_url(Stall.last)
   end
 
-  test "should show admin_stall" do
-    get admin_stall_url(@admin_stall)
+  test "should show stall" do
+    get admin_stall_url(@stall)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_admin_stall_url(@admin_stall)
+    get edit_admin_stall_url(@stall)
     assert_response :success
   end
 
-  test "should update admin_stall" do
-    patch admin_stall_url(@admin_stall), params: { admin_stall: { auth_code: @admin_stall.auth_code, description: @admin_stall.description, festival_id: @admin_stall.festival_id, name: @admin_stall.name, status_text: @admin_stall.status_text, user_id: @admin_stall.user_id } }
-    assert_redirected_to admin_stall_url(@admin_stall)
+  test "should update stall" do
+    patch admin_stall_url(@stall), params: { stall: {
+      auth_code: @stall.auth_code,
+      description: @stall.description,
+      festival_id: @stall.festival_id,
+      name: @stall.name,
+      status_text: @stall.status_text,
+      user_id: @stall.user_id
+    } }
+    assert_redirected_to admin_stall_url(@stall)
   end
 
-  test "should destroy admin_stall" do
-    assert_difference("Admin::Stall.count", -1) do
-      delete admin_stall_url(@admin_stall)
+  test "should destroy stall" do
+    assert_difference("Stall.count", -1) do
+      delete admin_stall_url(@stall)
     end
 
     assert_redirected_to admin_stalls_url

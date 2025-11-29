@@ -23,7 +23,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # ... render_500 メソッドなど ...
+  def render_500(error = nil)
+    logger.error(error.message) if error
+    render file: Rails.root.join('public/500.html'), status: :internal_server_error, layout: false
+  end
 
   # 【追加】3. 専用画面を表示するメソッド
   def render_no_assigned_yatai
