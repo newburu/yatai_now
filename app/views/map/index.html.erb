@@ -40,7 +40,8 @@
           
           const stallId = stall.id;
           // Google Maps は {lat: 緯度, lng: 経度} オブジェクトを使う
-          const position = { lat: stall.latitude, lng: stall.longitude }; 
+          // APIから渡される値は文字列になっている可能性があるため、parseFloatで数値に変換する
+          const position = { lat: parseFloat(stall.latitude), lng: parseFloat(stall.longitude) };
 
           // InfoWindow（マーカークリックで表示）の中身
           const infoWindowContent = `
@@ -50,9 +51,17 @@
           `;
 
           if (markers[stallId]) {
-            // (A) マーカーが既に存在する場合: 位置とInfoWindowを更新
+            // (A) マーカーが既に存在する場合: 位置とInfoWindowとアイコンを更新
             markers[stallId].marker.setPosition(position);
             markers[stallId].infoWindow.setContent(infoWindowContent);
+            if (stall.icon_url) {
+              markers[stallId].marker.setIcon({
+                url: stall.icon_url,
+                scaledSize: new google.maps.Size(40, 40)
+              });
+            } else {
+              markers[stallId].marker.setIcon(null); // アイコンが削除された場合はデフォルトに戻す
+            }
             
           } else {
             // (B) マーカーがまだない場合: 新しく作成
@@ -60,11 +69,20 @@
               content: infoWindowContent
             });
 
-            const marker = new google.maps.Marker({
+            const markerOptions = {
               position: position,
               map: map, // マーカーを地図に追加
               title: stall.name
-            });
+            };
+
+            if (stall.icon_url) {
+              markerOptions.icon = {
+                url: stall.icon_url,
+                scaledSize: new google.maps.Size(40, 40) // アイコンのサイズを40x40に設定
+              };
+            }
+
+            const marker = new google.maps.Marker(markerOptions);
 
             // マーカークリックで InfoWindow を開く
             marker.addListener('click', () => {

@@ -10,6 +10,8 @@ class Stall < ApplicationRecord
   # 「最新の位置情報1件だけ」を簡単に取得するための関連付け
   has_one :latest_location, -> { order(timestamp: :desc) }, class_name: "Location"
 
+  has_one_attached :icon
+
   # GPS合言葉を自動生成する（任意）
   before_create :generate_auth_code
 

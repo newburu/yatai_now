@@ -4,8 +4,28 @@ one:
   id: 1
   email: one@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: 1 # sender
 
 two:
   id: 2
   email: two@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: 1 # sender
+
+manager:
+  id: 3
+  email: manager@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: 2 # manager
+
+admin:
+  id: 4
+  email: admin@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: 3 # admin
+
+viewer:
+  id: 5
+  email: viewer@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+  role: 0 # viewer
