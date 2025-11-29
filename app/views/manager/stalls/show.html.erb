@@ -22,25 +22,25 @@
       </div>
       <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">
-          アイコン画像
-        </dt>
-        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-          <% if @my_stall.icon.attached? %>
-            <%= image_tag @my_stall.icon, class: "h-24 w-24 rounded-md object-cover" %>
-          <% else %>
-            <p class="text-gray-500">アイコンはまだ設定されていません。</p>
-          <% end %>
-        </dd>
-      </div>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-        <dt class="text-sm font-medium text-gray-500">
           紹介文
         </dt>
         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
           <%= @my_stall.description %>
         </dd>
       </div>
-      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+        <dt class="text-sm font-medium text-gray-500">
+          アイコン
+        </dt>
+        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+          <% if @my_stall.icon.attached? %>
+            <%= image_tag @my_stall.icon, class: "h-16 w-16 rounded-full" %>
+          <% else %>
+            <span class="text-gray-500">未設定</span>
+          <% end %>
+        </dd>
+      </div>
+      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">
           現在の状況
         </dt>
@@ -48,7 +48,7 @@
           <%= @my_stall.status_text %>
         </dd>
       </div>
-      <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+      <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
         <dt class="text-sm font-medium text-gray-500">
           GPS送信用 合言葉
         </dt>

@@ -1,13 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  stall: one
+  stall_id: 1
   latitude: 9.99
   longitude: 9.99
   timestamp: 2025-10-29 22:12:27
 
 two:
-  stall: two
+  stall_id: 2
   latitude: 9.99
   longitude: 9.99
   timestamp: 2025-10-29 22:12:27

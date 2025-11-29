@@ -24,7 +24,7 @@ class Admin::StallsControllerTest < ActionDispatch::IntegrationTest
         festival_id: @stall.festival_id,
         name: "New Stall",
         status_text: @stall.status_text,
-        user_id: @stall.user_id
+        user_id: @stall.manager.id
       } }
     end
 
@@ -48,7 +48,7 @@ class Admin::StallsControllerTest < ActionDispatch::IntegrationTest
       festival_id: @stall.festival_id,
       name: @stall.name,
       status_text: @stall.status_text,
-      user_id: @stall.user_id
+      user_id: @stall.manager.id
     } }
     assert_redirected_to admin_stall_url(@stall)
   end

@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  # Devise a strong parameter
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
@@ -20,6 +23,13 @@ class ApplicationController < ActionController::Base
   # 開発環境の設定(consider_all_requests_local)を変更して確認します。
   # ここでは、常に捕捉される位置に記述する例とします。
   rescue_from NoAssignedYataiError, with: :render_no_assigned_yatai
+
+  protected
+
+  def configure_permitted_parameters
+    # 新規登録時にroleを許可
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+  end
 
   private
 
