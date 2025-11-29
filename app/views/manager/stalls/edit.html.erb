@@ -22,6 +22,14 @@
       </div>
 
       <div>
+        <%= form.label :icon, 'アイコン画像', class: "block text-sm font-medium text-gray-700" %>
+        <div class="mt-1">
+          <%= form.file_field :icon, class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+        </div>
+        <p class="mt-2 text-sm text-gray-500">マップに表示されるアイコンです。正方形に近い画像推奨。</p>
+      </div>
+
+      <div>
         <%= form.label :status_text, '現在の状況', class: "block text-sm font-medium text-gray-700" %>
         <div class="mt-1">
           <%= form.text_field :status_text, class: "shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
