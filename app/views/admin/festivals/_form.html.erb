@@ -38,6 +38,16 @@
     </div>
   </div>
 
+  <div class="relative flex gap-x-3">
+    <div class="flex h-6 items-center">
+      <%= form.check_box :allow_anonymous_map_updates, class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600" %>
+    </div>
+    <div class="text-sm leading-6">
+      <%= form.label :allow_anonymous_map_updates, "未ログインユーザーの地図自動更新を許可する", class: "font-medium text-gray-900" %>
+      <p class="text-gray-500">チェックを外すと、ログインしていないユーザーは地図を手動で再読み込みする必要があります。</p>
+    </div>
+  </div>
+
   <div class="flex items-center justify-end gap-x-6">
     <%= link_to 'キャンセル', admin_festivals_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
     <%= form.submit "保存", class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 cursor-pointer" %>

@@ -14,11 +14,16 @@
     });
 
     // --- 3. 実行 ---
+    const pollingEnabled = <%= @enable_polling.to_json %>;
+    const userSignedIn = <%= user_signed_in?.to_json %>;
+
     // ページ読み込み時にまず1回実行
     updateMapMarkers();
     
-    // その後、一定間隔で繰り返し実行
-    setInterval(updateMapMarkers, UPDATE_INTERVAL);
+    // その後、一定間隔で繰り返し実行 (条件付き)
+    if (pollingEnabled || userSignedIn) {
+      setInterval(updateMapMarkers, UPDATE_INTERVAL);
+    }
   }
 
   // --- 2. APIからデータを取得してマーカーを更新する関数 ---

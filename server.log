@@ -1,0 +1,14 @@
+05:20:57 web.1  | started with pid 39603
+05:20:58 web.1  | => Booting Puma
+05:20:58 web.1  | => Rails 8.1.1 application starting in development
+05:20:58 web.1  | => Run `bin/rails server --help` for more startup options
+05:20:58 web.1  | Puma starting in single mode...
+05:20:58 web.1  | * Puma version: 7.1.0 ("Neon Witch")
+05:20:58 web.1  | * Ruby version: ruby 3.4.7 (2025-10-08 revision 7a5688e2a2) +PRISM [x86_64-linux]
+05:20:58 web.1  | *  Min threads: 3
+05:20:58 web.1  | *  Max threads: 3
+05:20:58 web.1  | *  Environment: development
+05:20:58 web.1  | *          PID: 39603
+05:20:58 web.1  | * Listening on http://127.0.0.1:5000
+05:20:58 web.1  | * Listening on http://[::1]:5000
+05:20:58 web.1  | Use Ctrl-C to stop

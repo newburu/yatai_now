@@ -66,6 +66,6 @@ class Admin::FestivalsController < Admin::BaseController
 
     # Only allow a list of trusted parameters through.
     def festival_params
-      params.expect(festival: [ :name, :is_active ])
+      params.require(:festival).permit(:name, :is_active, :allow_anonymous_map_updates)
     end
 end
