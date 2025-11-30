@@ -42,13 +42,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_30_053250) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "admin_festivals", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.boolean "is_active"
-    t.string "name"
-    t.datetime "updated_at", null: false
-  end
-
   create_table "festivals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "end_date"
