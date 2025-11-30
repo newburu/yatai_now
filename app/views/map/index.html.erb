@@ -1,4 +1,13 @@
-<div id='map' class="w-full h-[80vh] min-h-[400px] rounded-lg shadow-lg"></div>
+<div class="relative w-full h-[80vh] min-h-[400px]">
+  <div id='map' class="w-full h-full rounded-lg shadow-lg"></div>
+
+  <%# --- 手動更新ボタン (AJAXが無効な場合のみ表示) --- %>
+  <% unless @map_setting.ajax_for_all? || (@map_setting.ajax_for_logged_in? && user_signed_in?) %>
+    <div class="absolute top-2 right-2 z-10">
+      <%= link_to '地図を更新', map_path, class: "bg-white text-blue-600 font-semibold py-2 px-4 border border-blue-500 rounded-lg shadow hover:bg-gray-100 transition duration-300" %>
+    </div>
+  <% end %>
+</div>
 
 <script>
   const API_URL = '/api/v1/map_data';
@@ -17,8 +26,14 @@
     // ページ読み込み時にまず1回実行
     updateMapMarkers();
     
-    // その後、一定間隔で繰り返し実行
-    setInterval(updateMapMarkers, UPDATE_INTERVAL);
+    <%# --- AJAXによる自動更新を実行するかどうかをサーバーサイドで判断 --- %>
+    <% if @map_setting.ajax_for_all? || (@map_setting.ajax_for_logged_in? && user_signed_in?) %>
+      // その後、一定間隔で繰り返し実行
+      console.log('AJAX auto-update is enabled.');
+      setInterval(updateMapMarkers, UPDATE_INTERVAL);
+    <% else %>
+      console.log('AJAX auto-update is disabled.');
+    <% end %>
   }
 
   // --- 2. APIからデータを取得してマーカーを更新する関数 ---

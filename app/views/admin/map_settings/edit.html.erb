@@ -1,0 +1,35 @@
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold mb-6">地図の更新設定を編集</h1>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <%= form_with(model: [:admin, @map_setting], url: admin_map_setting_path, method: :put) do |form| %>
+      <% if @map_setting.errors.any? %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <strong class="font-bold">エラーが発生しました</strong>
+          <ul>
+            <% @map_setting.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-4">
+        <p class="text-lg font-semibold text-gray-700 mb-2">更新方法を選択してください</p>
+        <div class="space-y-2">
+          <% MapSetting.refresh_modes.keys.each do |mode| %>
+            <div class="flex items-center">
+              <%= form.radio_button :refresh_mode, mode, class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300" %>
+              <%= form.label :refresh_mode, MapSetting.human_attribute_name("refresh_mode.#{mode}"), value: mode, class: "ml-3 block text-sm font-medium text-gray-700" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mt-6">
+        <%= form.submit '設定を更新', class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer" %>
+        <%= link_to 'キャンセル', admin_map_setting_path, class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+      </div>
+    <% end %>
+  </div>
+</div>

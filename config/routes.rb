@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :users
     resources :festivals
     resources :users # 屋台管理者アカウントの管理
+    resource :map_setting, only: [:show, :edit, :update]
   end
 
   # 屋台管理者用 ( /manager/my_stall など)

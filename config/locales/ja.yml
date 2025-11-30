@@ -1,0 +1,16 @@
+ja:
+  activerecord:
+    models:
+      map_setting: 地図設定
+    attributes:
+      map_setting:
+        refresh_mode: 更新モード
+        refresh_modes:
+          ajax_for_all: 全員AJAXで自動更新
+          reload_for_all: 全員手動リロードで更新
+          ajax_for_logged_in: ログインユーザーのみAJAXで自動更新
+  helpers:
+    submit:
+      map_setting:
+        create: 作成
+        update: 更新
