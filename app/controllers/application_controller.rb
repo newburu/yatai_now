@@ -28,14 +28,14 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     # 新規登録時にroleを許可
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :role ])
   end
 
   private
 
   def render_500(error = nil)
     logger.error(error.message) if error
-    render file: Rails.root.join('public/500.html'), status: :internal_server_error, layout: false
+    render file: Rails.root.join("public/500.html"), status: :internal_server_error, layout: false
   end
 
   # 【追加】3. 専用画面を表示するメソッド

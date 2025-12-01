@@ -10,7 +10,7 @@ class Setting < ApplicationRecord
       # 値を型変換して返す
       case key.to_sym
       when :allow_anonymous_map_updates
-        setting.value == 'true'
+        setting.value == "true"
       else
         setting.value
       end

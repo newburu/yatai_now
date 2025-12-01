@@ -1,20 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // --- Configuration ---
+  // --- 設定 ---
   static values = {
     apiKey: String,
     enablePolling: Boolean,
     userSignedIn: Boolean
   }
 
-  // --- Lifecycle ---
+  // --- ライフサイクル ---
   connect() {
     this.API_URL = '/api/v1/map_data';
-    this.UPDATE_INTERVAL = 30000; // 30 seconds
-    this.markers = {}; // To store marker objects by stall ID
+    this.UPDATE_INTERVAL = 30000; // 30秒
+    this.markers = {}; // マーカーオブジェクトを屋台IDごとに保存
 
-    // Bind `this` to ensure the correct context when methods are used as callbacks
+    // コールバックとしてメソッドが使用される際に正しいコンテキストを確保するために `this` をバインド
     this.initMap = this.initMap.bind(this);
     this.updateMapMarkers = this.updateMapMarkers.bind(this);
 
@@ -22,89 +22,89 @@ export default class extends Controller {
   }
 
   disconnect() {
-    // Stop the interval when the controller is disconnected (e.g., when navigating away)
+    // コントローラーが切断されたとき（例：ページ遷移時）にインターバルを停止
     if (this.updateInterval) {
       clearInterval(this.updateInterval);
-      console.log('Map update interval stopped.');
+      console.log('地図の更新インターバルを停止しました。');
     }
   }
 
-  // --- Google Maps API Handling ---
+  // --- Google Maps API 処理 ---
   loadGoogleMapsAPI() {
-    // Avoid reloading the script if it's already present
+    // スクリプトが既に存在する場合は再読み込みを回避
     if (window.google && window.google.maps) {
       this.initMap();
       return;
     }
 
-    // Set the global callback function that the Google Maps API will execute upon loading
+    // Google Maps APIが読み込み完了時に実行するグローバルコールバック関数を設定
     window.initMap = this.initMap;
 
-    // Create and append the script tag to the document head
+    // scriptタグを作成し、ドキュメントのheadに追加
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${this.apiKeyValue}&callback=initMap`;
     script.async = true;
     document.head.appendChild(script);
   }
 
-  // --- Map Initialization & Updates ---
+  // --- 地図の初期化と更新 ---
 
   /**
-   * Initializes the Google Map. This method is the callback for the Google Maps API.
+   * Google Mapを初期化します。このメソッドはGoogle Maps APIのコールバックです。
    */
   initMap() {
     this.map = new google.maps.Map(this.element, {
-      center: { lat: 34.8394, lng: 134.6939 }, // Himeji Station area
+      center: { lat: 34.8394, lng: 134.6939 }, // 姫路駅周辺
       zoom: 13,
     });
 
-    // Fetch and display markers for the first time
+    // 初回マーカーを取得して表示
     this.updateMapMarkers(true);
 
-    // Set up a recurring interval to update markers
+    // マーカーを定期的に更新するためのインターバルを設定
     this.updateInterval = setInterval(this.updateMapMarkers, this.UPDATE_INTERVAL);
   }
 
   /**
-   * Fetches stall data from the API and updates the map markers.
-   * @param {boolean} firstLoad - Indicates if this is the initial data load.
+   * APIから屋台データを取得し、地図上のマーカーを更新します。
+   * @param {boolean} firstLoad - 初回読み込みかどうかを示します。
    */
   async updateMapMarkers(firstLoad = false) {
-    // For subsequent updates, check if polling is disabled for non-logged-in users
+    // 2回目以降の更新では、未ログインユーザーのポーリングが無効かチェック
     if (!firstLoad && !this.enablePollingValue && !this.userSignedInValue) {
-      location.reload(); // Reload to get fresh, server-rendered data
+      location.reload(); // サーバーでレンダリングされた最新のデータを取得するためにリロード
       return;
     }
 
-    console.log('Fetching map data...');
+    console.log('地図データを取得中...');
     try {
       const response = await fetch(this.API_URL);
       if (!response.ok) {
-        console.error('Failed to fetch map data');
+        console.error('地図データの取得に失敗しました');
         return;
       }
 
       const stalls = await response.json();
       this.processStallData(stalls);
-      console.log('Map updated.');
+      console.log('地図を更新しました。');
 
     } catch (error) {
-      console.error('Error updating map:', error);
+      console.error('地図の更新中にエラーが発生しました:', error);
     }
   }
 
   /**
-   * Processes the stall data and updates or creates markers on the map.
-   * @param {Array} stalls - An array of stall objects from the API.
+   * 屋台データを処理し、地図上のマーカーを更新または作成します。
+   * @param {Array} stalls - APIから取得した屋台オブジェクトの配列。
    */
   processStallData(stalls) {
     stalls.forEach(stall => {
       const latNum = parseFloat(stall.latitude);
       const lngNum = parseFloat(stall.longitude);
 
-      // Ensure location data is valid before proceeding
+      // 処理を続行する前に、位置情報データが有効であることを確認
       if (isNaN(latNum) || isNaN(lngNum)) {
-        console.warn(`Skipping stall ${stall.id} due to invalid location data:`, stall);
+        console.warn(`無効な位置情報データのため、屋台 ${stall.id} をスキップします:`, stall);
         return;
       }
 
@@ -117,17 +117,17 @@ export default class extends Controller {
       `;
 
       if (this.markers[stallId]) {
-        // If marker already exists, update its properties
+        // マーカーが既に存在する場合、そのプロパティを更新
         this.updateExistingMarker(this.markers[stallId], position, infoWindowContent, stall.icon_url);
       } else {
-        // If marker doesn't exist, create a new one
+        // マーカーが存在しない場合、新しいマーカーを作成
         this.createNewMarker(stallId, position, stall.name, infoWindowContent, stall.icon_url);
       }
     });
   }
 
   /**
-   * Updates an existing marker's position, info window, and icon.
+   * 既存のマーカーの位置、情報ウィンドウ、アイコンを更新します。
    */
   updateExistingMarker(markerData, position, content, iconUrl) {
     markerData.marker.setPosition(position);
@@ -136,7 +136,7 @@ export default class extends Controller {
   }
 
   /**
-   * Creates a new marker and stores it.
+   * 新しいマーカーを作成して保存します。
    */
   createNewMarker(stallId, position, title, content, iconUrl) {
     const infoWindow = new google.maps.InfoWindow({ content });
@@ -152,13 +152,13 @@ export default class extends Controller {
       infoWindow.open({ anchor: marker, map: this.map });
     });
 
-    // Store the new marker and its info window
+    // 新しいマーカーとその情報ウィンドウを保存
     this.markers[stallId] = { marker, infoWindow };
   }
 
   /**
-   * Creates a scaled icon object for a marker.
-   * @param {string|null} url - The URL of the icon.
+   * マーカー用のスケールされたアイコンオブジェクトを作成します。
+   * @param {string|null} url - アイコンのURL。
    * @returns {google.maps.Icon|null}
    */
   createIcon(url) {
