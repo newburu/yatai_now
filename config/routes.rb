@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get "sender/index"
     get "map", to: "map#index"
 
-    root "map#index"
+    root "home#index"
 
     get "sender", to: "sender#index"
 
